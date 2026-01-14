@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,101 +13,183 @@ import {
   FlaskConical,
 } from "lucide-react";
 
-const industries = [
-  { key: "medical", title: "Medical", tagline: "Precision coatings for healthcare", image: "/industries/medical.jpg", icon: Stethoscope, subs: ["Blood Collection Tube Coating","Stents","Balloons","Diagnostic Devices","Medical Textiles / Mesh"] },
-  { key: "electronics", title: "Electronics", tagline: "Advanced micro & PCB protection", image: "/industries/electronics.jpg", icon: Cpu, subs: ["PCB Coating","Semiconductor Coating","Sensor Protection","Micro Components"] },
-  { key: "automotive", title: "Automotive", tagline: "Durable & efficient surface layers", image: "/industries/automotive.jpg", icon: Car, subs: ["Fuel Injectors","EV Battery Coating","Engine Components","Wear Protection"] },
-  { key: "energy", title: "Energy", tagline: "High-performance energy solutions", image: "/industries/energy.jpg", icon: BatteryCharging, subs: ["Solar Cell Coating","Fuel Cells","Battery Electrodes","Energy Storage"] },
-  { key: "textiles", title: "Textiles", tagline: "Functional & smart fabric coatings", image: "/industries/textile.jpg", icon: Shirt, subs: ["Water Repellent Fabrics","Medical Fabrics","Protective Coatings","Functional Textiles"] },
-  { key: "research", title: "Research & R&D", tagline: "Innovation at nano scale", image: "/industries/nano.jpg", icon: FlaskConical, subs: ["Nanotechnology","Material Science","Lab Scale Coating","Prototype Development"] },
-];
-
-export default function IndustriesTop({ onSelect }) {
+export default function IndustriesTop({ industries = [], onSelect }) {
+  const [current, setCurrent] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const [openIndustry, setOpenIndustry] = useState(null);
-  const wrapperRef = useRef(null);
+  const total = industries.length;
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setOpenIndustry(null);
-      }
+    setMounted(true);
+
+    if (!openIndustry && total > 1) {
+      const interval = setInterval(() => {
+        setCurrent((prev) => (prev + 1) % total);
+      }, 3500);
+      return () => clearInterval(interval);
+    }
+  }, [openIndustry, total]);
+
+  if (!mounted || total === 0) return null;
+
+  const getIndex = (offset) => (current + offset + total) % total;
+
+  const IndustryCard = ({ industry, size = "md", dimmed = false }) => {
+    const sizes = {
+      sm: "w-[260px] h-[170px]",
+      md: "w-[300px] h-[200px]",
+      lg: "w-[380px] h-[250px]",
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
+    const Icon =
+      industry.slug === "medical"
+        ? Stethoscope
+        : industry.slug === "electronics"
+        ? Cpu
+        : industry.slug === "automotive"
+        ? Car
+        : industry.slug === "energy"
+        ? BatteryCharging
+        : industry.slug === "textile" || industry.slug === "textiles"
+        ? Shirt
+        : FlaskConical;
+
+    const isOpen = openIndustry === industry.slug;
+
+    return (
+      <div
+        className={`relative ${sizes[size]} rounded-2xl overflow-hidden shadow-xl transition-all duration-500 cursor-pointer ${
+          dimmed ? "opacity-60 scale-95" : ""
+        }`}
+        onClick={() => setOpenIndustry(isOpen ? null : industry.slug)}
+      >
+        {industry.image && (
+          <Image
+            src={industry.image}
+            alt={industry.title}
+            fill
+            className="object-cover brightness-75"
+          />
+        )}
+
+        <div className="absolute inset-0 bg-black/20 rounded-2xl" />
+
+        <div className="absolute top-3 left-3 right-3 text-white text-sm font-semibold px-3 py-1.5 flex flex-col gap-1 drop-shadow-lg z-10">
+          <div className="flex justify-center">
+            <Icon size={20} className="text-green-400" />
+          </div>
+          <div className="text-center">{industry.title}</div>
+          <div className="text-center text-xs font-normal">
+            {industry.tagline}
+          </div>
+        </div>
+
+        {!dimmed && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10">
+            <ChevronDown
+              size={22}
+              className={`text-white transition-transform duration-300 ${
+                isOpen ? "rotate-180" : "animate-bounce"
+              }`}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const activeIndustry = industries[current];
 
   return (
-    <section className="relative py-14 px-4 rounded-3xl" style={{ background: "linear-gradient(135deg, #e5e7eb 0%, #f1f5f9 45%, #ffffff 100%)" }}>
-      <div className="absolute inset-0 overflow-hidden rounded-3xl">
-        <div className="absolute -top-40 -left-40 w-[420px] h-[420px] bg-green-400/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute -bottom-48 -right-48 w-[480px] h-[480px] bg-emerald-300/20 rounded-full blur-3xl animate-float delay-3000" />
-      </div>
+    <section
+      className="relative w-full overflow-visible py-16"
+      style={{
+        background:
+          "linear-gradient(135deg, #ffffffff 0%, #f1f5f9 45%, #ffffffff 100%)",
+      }}
+    >
+      {/* FLOATING BLOBS */}
+      <div className="absolute -top-40 -left-40 w-[420px] h-[420px] bg-green-400/20 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute -bottom-48 -right-48 w-[480px] h-[480px] bg-gray-300/20 rounded-full blur-3xl animate-float delay-3000"></div>
 
-      <div ref={wrapperRef} className="relative z-20 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-7">
-        {industries.map((item) => {
-          const isActive = openIndustry === item.key;
-          const Icon = item.icon;
+      {/* SLIDER */}
+      <div className="relative max-w-7xl mx-auto">
+        <div className="relative flex items-center justify-center gap-6 md:gap-10 overflow-visible">
 
-          return (
-            <div key={item.key} className="relative">
-              <div
-                onClick={() => setOpenIndustry(isActive ? null : item.key)}
-                className={`relative h-[215px] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${isActive ? "ring-2 ring-green-500 shadow-2xl" : "shadow-md hover:shadow-xl"}`}
-              >
-                <Image src={item.image} alt={item.title} fill className="object-cover scale-105" />
-                <div className="absolute inset-0 bg-white/65" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/25 to-black/10" />
+          <div className="hidden lg:block">
+            <IndustryCard industry={industries[getIndex(-2)]} size="sm" dimmed />
+          </div>
 
-                <div className="relative z-10 h-full px-4 pt-5 pb-4 flex flex-col justify-between text-gray-900">
-                  <div className="text-center space-y-2">
-                    <Icon size={26} className="mx-auto text-green-600" />
-                    <h3 className="font-semibold text-base">{item.title}</h3>
-                    <p className="text-xs text-gray-700 leading-snug">{item.tagline}</p>
-                  </div>
+          <div onClick={() => setCurrent(getIndex(-1))} className="cursor-pointer">
+            <IndustryCard industry={industries[getIndex(-1)]} size="md" dimmed />
+          </div>
 
-                  <div className="flex justify-center">
-                    <div className={`w-9 h-9 rounded-full flex items-center justify-center bg-white/80 backdrop-blur border border-gray-300 transition-transform duration-300 ${isActive ? "rotate-180 text-green-600" : "text-gray-700"}`}>
-                      <ChevronDown size={18} />
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="z-20 scale-110 relative">
+            <IndustryCard industry={activeIndustry} size="lg" />
 
-              <AnimatePresence>
-                {isActive && (
+            <AnimatePresence>
+              {openIndustry === activeIndustry.slug &&
+                Array.isArray(activeIndustry.applications) &&
+                activeIndustry.applications.length > 0 && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-1/2 -translate-x-1/2 mt-3 w-72 z-50"
+                    initial={{ opacity: 0, y: -14, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -14, scale: 0.96 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="absolute left-1/2 -translate-x-1/2 top-full mt-5 w-80 z-50"
                   >
-                    <div className="bg-white/95 backdrop-blur border border-green-500/40 rounded-xl shadow-lg overflow-hidden">
-                      {item.subs.map((sub, i) => (
-                        <motion.div
-                          key={i}
-                          whileHover={{ scale: 1.03, backgroundColor: "rgba(16,185,129,0.1)" }}
-                          transition={{ duration: 0.2 }}
-                          onClick={() => { onSelect(item.key, sub); setOpenIndustry(null); }}
-                          className="px-5 py-3 text-sm text-gray-700 cursor-pointer border-b last:border-b-0 rounded-lg"
-                        >
-                          {sub}
-                        </motion.div>
-                      ))}
+                    <div className="relative rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] backdrop-blur-xl bg-white/80 border border-white/40">
+                      <div className="h-1.5 bg-gradient-to-r from-green-500 via-emerald-400 to-green-500"></div>
+
+                      <div className="py-2">
+                        {activeIndustry.applications.map((app) => (
+                          <motion.div
+                            key={app.slug}
+                            whileHover={{ x: 6 }}
+                            onClick={() => {
+                              onSelect(activeIndustry.slug, app.slug);
+                              setOpenIndustry(null);
+                            }}
+                            className="group flex items-center gap-3 px-6 py-3 text-sm font-medium text-gray-700 cursor-pointer transition-all"
+                          >
+                            <span className="w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-green-500 transition-colors"></span>
+                            <span className="group-hover:text-green-700 transition-colors">
+                              {app.title}
+                            </span>
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
                   </motion.div>
                 )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
-      </div>
+            </AnimatePresence>
+          </div>
 
-      <style jsx>{`
-        @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(28px);}}
-        .animate-float {animation: float 14s ease-in-out infinite;}
-        .delay-3000 {animation-delay: 3s;}
-      `}</style>
+          <div onClick={() => setCurrent(getIndex(1))} className="cursor-pointer">
+            <IndustryCard industry={industries[getIndex(1)]} size="md" dimmed />
+          </div>
+
+          <div className="hidden lg:block">
+            <IndustryCard industry={industries[getIndex(2)]} size="sm" dimmed />
+          </div>
+
+          {/* ARROWS — UNTOUCHED */}
+          <button
+            onClick={() => setCurrent(getIndex(-1))}
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white w-11 h-11 rounded-full shadow-lg z-30"
+          >
+            ❮
+          </button>
+
+          <button
+            onClick={() => setCurrent(getIndex(1))}
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white w-11 h-11 rounded-full shadow-lg z-30"
+          >
+            ❯
+          </button>
+
+        </div>
+      </div>
     </section>
   );
 }

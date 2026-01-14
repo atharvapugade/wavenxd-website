@@ -1,4 +1,10 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function CTA() {
+  const router = useRouter();
+
   return (
     <section className="mt-20 bg-slate-100 py-14">
       <div className="max-w-4xl mx-auto text-center px-6">
@@ -15,7 +21,10 @@ export default function CTA() {
         </p>
 
         {/* CTA BUTTON */}
-        <button className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition">
+        <button
+          onClick={() => router.push("/contact")}
+          className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition"
+        >
           Get in Touch
         </button>
 

@@ -24,7 +24,7 @@ const data = [
 export default function MVV() {
   return (
     <section className="mt-20 py-16 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         {/* HEADING */}
         <h2 className="text-2xl md:text-3xl font-semibold text-center mb-12 text-gray-900">
@@ -32,11 +32,11 @@ export default function MVV() {
         </h2>
 
         {/* CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {data.map((item, index) => (
             <div
               key={index}
-              className="group relative h-[300px] rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+              className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
             >
               {/* BACKGROUND IMAGE */}
               <div
@@ -45,19 +45,19 @@ export default function MVV() {
               />
 
               {/* OVERLAY */}
-              <div className="absolute inset-0 bg-white/65 → bg-white/85" />
+              <div className="absolute inset-0 bg-gradient-to-b from-white/65 to-white/85" />
 
               {/* CONTENT */}
-              <div className="relative h-full p-8 text-center flex flex-col justify-center">
-                <div className="flex justify-center mb-4">
+              <div className="relative w-full h-full p-4 sm:p-8 text-center flex flex-col justify-center">
+                <div className="flex justify-center mb-3 sm:mb-4">
                   {item.icon}
                 </div>
 
-                <h3 className="font-semibold text-lg mb-3 text-gray-900">
+                <h3 className="font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-gray-900">
                   {item.title}
                 </h3>
 
-                <p className="text-gray-700 text-sm leading-relaxed">
+                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">
                   {item.desc}
                 </p>
               </div>

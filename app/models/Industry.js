@@ -1,28 +1,33 @@
-// app/models/Industry.js
 import mongoose from "mongoose";
 
-const applicationSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  image: String,
-  technicalPapers: [
-    {
-      title: String,
-      fileUrl: String,
-    },
-  ],
-});
-
-const industrySchema = new mongoose.Schema(
+const TechnicalPaperSchema = new mongoose.Schema(
   {
     title: String,
-    slug: { type: String, unique: true },
-    heroImage: String,
+    link: String,
+  },
+  { _id: false }
+);
+
+const ApplicationSchema = new mongoose.Schema(
+  {
+    title: String,
+    slug: String,
     description: String,
-    applications: [applicationSchema],
+    image: String,
+    technicalPapers: [TechnicalPaperSchema],
+  },
+  { _id: false }
+);
+
+const IndustrySchema = new mongoose.Schema(
+  {
+    name: String,
+    slug: { type: String, unique: true },
+    applications: [ApplicationSchema],
+    isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
 
 export default mongoose.models.Industry ||
-  mongoose.model("Industry", industrySchema);
+  mongoose.model("Industry", IndustrySchema);

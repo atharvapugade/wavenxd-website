@@ -18,10 +18,10 @@ export const sendEnquiryMail = async (data) => {
       <h3>General Information</h3>
       <p><strong>Organization Name:</strong> ${data.organizationName}</p>
       <p><strong>Website:</strong> ${data.organizationWebsite}</p>
-      <p><strong>GST No:</strong> ${data.gstNo}</p>
+      <p><strong>GST No:</strong> ${data.gstNumber || "N/A"}</p>
       <p><strong>Address:</strong> ${data.address}</p>
       <p><strong>Organization Type:</strong> ${data.organizationType}</p>
-      <p><strong>PO / Quotation No:</strong> ${data.quotationNo}</p>
+      <p><strong>PO / Quotation No:</strong> ${data.poNumber || "N/A"}</p>
 
       <h3>Point of Contact (SPoC)</h3>
       <p><strong>Name:</strong> ${data.spocName}</p>
@@ -53,7 +53,7 @@ export const sendEnquiryMail = async (data) => {
       <p><strong>Coat Adherence:</strong> ${data.coatAdherence}</p>
 
       <h3>Additional Support</h3>
-      <p>${data.supportRequired}</p>
+      <p>${data.supportRequired || "N/A"}</p>
 
       <hr/>
       <p style="font-size:12px;color:#666;">

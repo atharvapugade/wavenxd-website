@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { connectDB } from "../../lib/mongodb";
+import  connectDB  from "../../lib/mongodb";
 import Product from "../../models/Product";
+import RequestQuoteButton from "@/app/components/RequestQuoteButton";
+
+
 
 export default async function ProductDetail({ params }) {
   // Fix: unwrap params
@@ -89,9 +92,14 @@ export default async function ProductDetail({ params }) {
               Contact Us for Pricing
             </Link>
 
-            <button className="w-full bg-green-600 text-white py-3 rounded-lg">
-              Request Quote
-            </button>
+            <RequestQuoteButton
+  product={{
+    title: product.title,
+    slug: product.slug,
+  }}
+/>
+
+
           </div>
         </div>
 

@@ -1,6 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+
+/* ---------- Small reusable wrapper for input + info tooltip ---------- */
+function FieldWithInfo({ info, children }) {
+  return (
+    <div className="relative group">
+      {children}
+
+      {/* Info Icon */}
+      <span className="absolute top-2 right-2 text-gray-400 cursor-pointer text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full border border-gray-300 bg-white group-hover:text-green-600">
+        i
+      </span>
+
+      {/* Tooltip */}
+      <div className="absolute z-20 top-0 right-6 -translate-y-full mb-2 hidden group-hover:block">
+        <div className="bg-gray-800 text-white text-xs px-3 py-2 rounded-md shadow-lg max-w-xs">
+          {info}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function EnquiryModal({ onClose }) {
   const [loading, setLoading] = useState(false);
@@ -59,12 +81,11 @@ export default function EnquiryModal({ onClose }) {
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error || "Submission failed");
 
       setMessage("✅ Enquiry submitted successfully!");
       setTimeout(() => onClose(), 1500);
-    } catch (err) {
+    } catch {
       setMessage("❌ Failed to submit enquiry. Please try again.");
     } finally {
       setLoading(false);
@@ -77,9 +98,12 @@ export default function EnquiryModal({ onClose }) {
 
         {/* Header */}
         <div className="flex justify-between items-center px-6 py-4 border-b">
-          <h2 className="text-lg font-semibold text-green-700">
-            Micro Spray Application Evaluation Form
-          </h2>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.png" alt="WaveNxD" width={140} height={50} />
+            <h2 className="text-lg font-semibold text-green-700">
+              Micro Spray Application Evaluation Form
+            </h2>
+          </div>
           <button onClick={onClose} className="text-xl">&times;</button>
         </div>
 
@@ -88,10 +112,42 @@ export default function EnquiryModal({ onClose }) {
           {/* GENERAL INFO */}
           <h3 className="font-semibold text-green-600">General Information</h3>
           <div className="grid md:grid-cols-2 gap-4">
-            <input name="organizationName" onChange={handleChange} placeholder="Organization Name" className="input" />
-            <input name="organizationWebsite" onChange={handleChange} placeholder="Organization Website" className="input" />
-            <input name="gstNumber" onChange={handleChange} placeholder="GST No." className="input" />
-            <input name="address" onChange={handleChange} placeholder="Address" className="input" />
+            <FieldWithInfo info="Registered legal name of your organization">
+              <input
+                name="organizationName"
+                onChange={handleChange}
+                placeholder="Organization Name"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Official website URL (if available)">
+              <input
+                name="organizationWebsite"
+                onChange={handleChange}
+                placeholder="Organization Website"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="GST Identification Number (if applicable)">
+              <input
+                name="gstNumber"
+                onChange={handleChange}
+                placeholder="GST No."
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Complete registered address">
+              <input
+                name="address"
+                onChange={handleChange}
+                placeholder="Address"
+                className="input"
+              />
+            </FieldWithInfo>
+
             <select name="organizationType" onChange={handleChange} className="input">
               <option value="">Organization Type</option>
               <option>OEM</option>
@@ -102,10 +158,42 @@ export default function EnquiryModal({ onClose }) {
               <option>Research</option>
               <option>Other</option>
             </select>
-            <input name="poNumber" onChange={handleChange} placeholder="PO / Quotation No." className="input" />
-            <input name="spocName" onChange={handleChange} placeholder="Name of SPoC" className="input" />
-            <input name="spocEmail" onChange={handleChange} placeholder="Email of SPoC" className="input" />
-            <input name="spocPhone" onChange={handleChange} placeholder="Phone No. of SPoC" className="input" />
+
+            <FieldWithInfo info="Purchase order or quotation reference number">
+              <input
+                name="poNumber"
+                onChange={handleChange}
+                placeholder="PO / Quotation No."
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Primary contact person for this enquiry">
+              <input
+                name="spocName"
+                onChange={handleChange}
+                placeholder="Name of SPoC"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Official email ID of contact person">
+              <input
+                name="spocEmail"
+                onChange={handleChange}
+                placeholder="Email of SPoC"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Mobile or landline number with country code">
+              <input
+                name="spocPhone"
+                onChange={handleChange}
+                placeholder="Phone No. of SPoC"
+                className="input"
+              />
+            </FieldWithInfo>
           </div>
 
           {/* APPLICATION INFO */}
@@ -133,8 +221,23 @@ export default function EnquiryModal({ onClose }) {
               <option>Torch</option>
             </select>
 
-            <input name="flowRate" onChange={handleChange} placeholder="Flow Rate (ml/min)" className="input" />
-            <input name="viscosity" onChange={handleChange} placeholder="Viscosity (Cps)" className="input" />
+            <FieldWithInfo info="Liquid flow rate required during operation">
+              <input
+                name="flowRate"
+                onChange={handleChange}
+                placeholder="Flow Rate (ml/min)"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Viscosity of solution at operating temperature">
+              <input
+                name="viscosity"
+                onChange={handleChange}
+                placeholder="Viscosity (Cps)"
+                className="input"
+              />
+            </FieldWithInfo>
 
             <select name="solvent" onChange={handleChange} className="input">
               <option value="">Solvent</option>
@@ -145,14 +248,38 @@ export default function EnquiryModal({ onClose }) {
               <option>Other</option>
             </select>
 
-            <input name="solute" onChange={handleChange} placeholder="Solute" className="input" />
-            <input name="solutionPercentage" onChange={handleChange} placeholder="Solution Percentage" className="input" />
+            <FieldWithInfo info="Material dissolved in the solvent">
+              <input
+                name="solute"
+                onChange={handleChange}
+                placeholder="Solute"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Weight or volume percentage of solute">
+              <input
+                name="solutionPercentage"
+                onChange={handleChange}
+                placeholder="Solution Percentage"
+                className="input"
+              />
+            </FieldWithInfo>
+
             <select name="suspendedParticles" onChange={handleChange} className="input">
               <option value="">Suspended Particles</option>
               <option>Yes</option>
               <option>No</option>
             </select>
-            <input name="particleSize" onChange={handleChange} placeholder="Particle Size (if any)" className="input" />
+
+            <FieldWithInfo info="Droplet or particle size if known">
+              <input
+                name="particleSize"
+                onChange={handleChange}
+                placeholder="Droplet Size (if any)"
+                className="input"
+              />
+            </FieldWithInfo>
 
             <select name="applicationNature" onChange={handleChange} className="input">
               <option value="">Nature of Application</option>
@@ -162,9 +289,32 @@ export default function EnquiryModal({ onClose }) {
               <option>Other</option>
             </select>
 
-            <input name="substrateType" onChange={handleChange} placeholder="Substrate Type" className="input" />
-            <input name="operatingTemperature" onChange={handleChange} placeholder="Min / Max Operating Temperature" className="input" />
-            <input name="storageTemperature" onChange={handleChange} placeholder="Nozzle Storage Temperature" className="input" />
+            <FieldWithInfo info="Material on which coating/spray is applied">
+              <input
+                name="substrateType"
+                onChange={handleChange}
+                placeholder="Substrate Type"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Operating temperature range during process">
+              <input
+                name="operatingTemperature"
+                onChange={handleChange}
+                placeholder="Min / Max Operating Temperature"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Safe storage temperature of nozzle">
+              <input
+                name="storageTemperature"
+                onChange={handleChange}
+                placeholder="Nozzle Storage Temperature"
+                className="input"
+              />
+            </FieldWithInfo>
 
             <select name="airShaping" onChange={handleChange} className="input">
               <option value="">Air Shaping Required?</option>
@@ -176,19 +326,60 @@ export default function EnquiryModal({ onClose }) {
           {/* OUTCOME */}
           <h3 className="font-semibold text-green-600">Desired Outcome</h3>
           <div className="grid md:grid-cols-2 gap-4">
-            <input name="avgParticleSize" onChange={handleChange} placeholder="Average Particle Size" className="input" />
-            <input name="particleYield" onChange={handleChange} placeholder="Particle Yield" className="input" />
-            <input name="coatingThickness" onChange={handleChange} placeholder="Coating Thickness" className="input" />
-            <input name="coatingUniformity" onChange={handleChange} placeholder="Coating Uniformity" className="input" />
-            <input name="coatAdherence" onChange={handleChange} placeholder="Coat Adherence" className="input" />
+            <FieldWithInfo info="Expected average droplet size">
+              <input
+                name="avgParticleSize"
+                onChange={handleChange}
+                placeholder="Average Droplet Size"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Expected output yield of droplets">
+              <input
+                name="particleYield"
+                onChange={handleChange}
+                placeholder="Droplet Yield"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Required coating thickness in microns">
+              <input
+                name="coatingThickness"
+                onChange={handleChange}
+                placeholder="Coating Thickness"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Uniformity requirement across surface">
+              <input
+                name="coatingUniformity"
+                onChange={handleChange}
+                placeholder="Coating Uniformity"
+                className="input"
+              />
+            </FieldWithInfo>
+
+            <FieldWithInfo info="Expected adhesion strength of coating">
+              <input
+                name="coatAdherence"
+                onChange={handleChange}
+                placeholder="Coat Adherence"
+                className="input"
+              />
+            </FieldWithInfo>
           </div>
 
-          <textarea
-            name="supportRequired"
-            onChange={handleChange}
-            placeholder="Any support required before procurement?"
-            className="input h-24"
-          />
+          <FieldWithInfo info="Mention any technical or commercial support needed">
+            <textarea
+              name="supportRequired"
+              onChange={handleChange}
+              placeholder="Any support required before procurement?"
+              className="input h-24"
+            />
+          </FieldWithInfo>
 
           {message && <p className="text-center font-medium">{message}</p>}
 
@@ -205,6 +396,7 @@ export default function EnquiryModal({ onClose }) {
               {loading ? "Submitting..." : "Submit"}
             </button>
           </div>
+
         </form>
       </div>
     </div>

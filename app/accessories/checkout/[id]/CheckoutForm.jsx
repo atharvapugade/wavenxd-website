@@ -4,9 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-export default function CheckoutForm({ product }) {
+export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
   const router = useRouter();
+  const isCartCheckout = cartItems.length > 0;
+
   const [quantity, setQuantity] = useState(1);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,7 +21,14 @@ export default function CheckoutForm({ product }) {
   });
 
   const shippingCharge = 100;
-  const subtotal = product.price * quantity;
+  const subtotal = isCartCheckout
+    ? cartItems.reduce(
+        (sum, item) =>
+          sum + (item.price || 0) * (item.quantity || 1),
+        0
+      )
+    : (product?.price || 0) * quantity;
+
   const total = subtotal + shippingCharge;
 
   const handleChange = (e) => {
@@ -39,26 +49,19 @@ export default function CheckoutForm({ product }) {
 
   const loadRazorpayScript = () =>
     new Promise((resolve) => {
-      if (typeof window !== "undefined" && window.Razorpay) {
-        resolve(true);
-        return;
-      }
+      if (window.Razorpay) return resolve(true);
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
       script.onload = () => resolve(true);
       script.onerror = () => resolve(false);
       document.body.appendChild(script);
     });
 
   const handlePayment = async () => {
-    if (!isFormValid()) {
-      alert("Please fill all shipping details correctly");
-      return;
-    }
+    if (!isFormValid()) return alert("Please fill all shipping details");
 
     const loaded = await loadRazorpayScript();
-    if (!loaded) return alert("Razorpay SDK failed to load");
+    if (!loaded) return alert("Razorpay SDK failed");
 
     const res = await fetch("/api/payment/create-order", {
       method: "POST",
@@ -73,10 +76,13 @@ export default function CheckoutForm({ product }) {
       amount: order.amount,
       currency: order.currency,
       name: "WaveNxd",
-      description: product.title,
+      description: isCartCheckout
+        ? "Accessories Cart"
+        : product?.title || "Product",
       order_id: order.id,
-      handler: function (response) {
+      handler: function () {
         alert("Payment Successful!");
+        onSuccess?.();
         router.push("/accessories");
       },
       prefill: {
@@ -87,92 +93,128 @@ export default function CheckoutForm({ product }) {
       theme: { color: "#22c55e" },
     };
 
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
+    new window.Razorpay(options).open();
   };
+return (
+  /* MODAL OVERLAY */
+  <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4">
+    <div className="bg-white w-full max-w-4xl rounded-xl shadow-xl p-8 relative">
 
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-3xl font-semibold mb-8">Checkout</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* PRODUCT SUMMARY */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Your Product</h2>
-          <div className="flex gap-6">
-            <div className="w-[150px] h-[150px] relative flex-shrink-0">
-              <Image
-                src={product.image}
-                alt={product.title}
-                fill
-                className="object-cover rounded-lg"
-              />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-medium">{product.title}</h3>
-              <p className="text-gray-600 text-sm mt-1">{product.description}</p>
+      {/* HEADER */}
+<div className="relative flex items-center mb-6">
+  {/* Logo - Left */}
+  <Image
+    src="/logo.png"
+    alt="WaveNxD"
+    width={160}
+    height={80}
+    className="object-contain"
+  />
 
-              <div className="mt-4 flex justify-between items-center">
-                <select
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="border px-2 py-1 rounded"
-                >
-                  {[...Array(10)].map((_, i) => (
-                    <option key={i} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </select>
+  {/* Center Title */}
+  <h2 className="absolute left-1/2 -translate-x-1/2 text-xl font-semibold text-green-600">
+    Secure Checkout
+  </h2>
 
-                <span className="text-green-600 font-bold text-lg">
-                  ₹{subtotal}
-                </span>
-              </div>
+  {/* Close Button - Right */}
+  <button
+    onClick={() => router.back()}
+    className="ml-auto text-gray-500 hover:text-gray-800 text-2xl leading-none"
+    aria-label="Close"
+  >
+    &times;
+  </button>
+</div>
 
-              <div className="mt-6 border-t pt-4 text-sm">
-                <div className="flex justify-between mb-2">
-                  <span>Subtotal</span>
-                  <span>₹{subtotal}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Shipping</span>
-                  <span>₹{shippingCharge}</span>
-                </div>
-                <div className="flex justify-between font-semibold text-lg border-t pt-2">
-                  <span>Total</span>
-                  <span>₹{total}</span>
-                </div>
-              </div>
+
+      {/* PRODUCT SUMMARY */}
+      {!isCartCheckout && product && (
+        <div className="mb-8 flex gap-6 items-center border-b pb-6">
+          <div className="w-28 h-28 relative rounded-lg overflow-hidden">
+            <Image
+              src={product.image || ""}
+              alt={product.title || ""}
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          <div className="flex-1">
+            <h3 className="font-medium">{product.title}</h3>
+            <p className="text-sm text-gray-500 mt-1">
+              {product.description}
+            </p>
+
+            <div className="flex justify-between items-center mt-4">
+              <select
+                value={quantity}
+                onChange={(e) =>
+                  setQuantity(Number(e.target.value))
+                }
+                className="border px-3 py-2 rounded-lg"
+              >
+                {[...Array(10)].map((_, i) => (
+                  <option key={i} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+
+              <span className="text-green-600 font-semibold">
+                ₹{subtotal}
+              </span>
             </div>
           </div>
         </div>
+      )}
 
-        {/* SHIPPING FORM */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Shipping Details</h2>
-          <div className="space-y-4">
-            {["name","email","address","city","state","pin","phone"].map((field) => (
-              <input
-                key={field}
-                name={field}
-                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                value={formData[field]}
-                onChange={handleChange}
-                className="w-full border px-3 py-2 rounded"
-              />
-            ))}
+      {/* FORM */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {["name", "phone", "email", "city", "state", "pin"].map((field) => (
+          <input
+            key={field}
+            name={field}
+            placeholder={field.toUpperCase()}
+            value={formData[field]}
+            onChange={handleChange}
+            className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        ))}
 
-            <button
-              onClick={handlePayment}
-              disabled={!isFormValid()}
-              className={`w-full py-3 rounded-full font-medium transition
-                ${isFormValid() ? "bg-green-600 text-white hover:bg-green-700" : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
-            >
-              Proceed to Payment
-            </button>
-          </div>
-        </div>
+        <input
+          name="address"
+          placeholder="ADDRESS"
+          value={formData.address}
+          onChange={handleChange}
+          className="md:col-span-2 w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
       </div>
+
+      {/* TOTAL */}
+      <div className="flex justify-between text-lg font-semibold mt-6">
+        <span>Total</span>
+        <span>₹{total}</span>
+      </div>
+
+      {/* TRUST MESSAGE */}
+      <p className="text-sm text-gray-500 mt-2">
+        🔒 After successful payment, our team will contact you shortly to
+        confirm your order and assist you further.
+      </p>
+
+      {/* PAY BUTTON */}
+      <button
+        onClick={handlePayment}
+        disabled={!isFormValid()}
+        className={`w-full mt-6 py-3 rounded-lg text-white text-lg transition ${
+          isFormValid()
+            ? "bg-green-600 hover:bg-green-700"
+            : "bg-gray-300 cursor-not-allowed"
+        }`}
+      >
+        Proceed To Pay
+      </button>
     </div>
-  );
+  </div>
+);
 }

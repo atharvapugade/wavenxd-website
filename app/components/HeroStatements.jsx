@@ -27,7 +27,37 @@ export default function PartnersAndHero() {
           "linear-gradient(135deg, #eef2f7 0%, #f8fafc 45%, #ffffff 100%)",
       }}
     >
-      <div className="flex items-center justify-between px-10 py-4">
+      {/* ================= MOBILE ONLY ================= */}
+      <div className="md:hidden px-4 py-3">
+        <div className="flex items-center justify-between">
+          <Image
+            src="/partners/scitech.png"
+            alt="Science and Technology Park"
+            width={90}
+            height={30}
+            className="object-contain"
+          />
+
+          <Image
+            src="/partners/dst.jpg"
+            alt="Department of Science and Technology"
+            width={80}
+            height={30}
+            className="object-contain"
+          />
+
+          <Image
+            src="/partners/dpit.jpeg"
+            alt="Department of Science and Technology"
+            width={80}
+            height={30}
+            className="object-contain"
+          />
+        </div>
+      </div>
+
+      {/* ================= DESKTOP ONLY (ORIGINAL CODE) ================= */}
+      <div className="hidden md:flex items-center justify-between px-10 py-4">
 
         {/* LEFT */}
         <div className="flex items-center gap-4">
@@ -38,25 +68,24 @@ export default function PartnersAndHero() {
           <Image
             src="/partners/scitech.png"
             alt="Science and Technology Park"
-            width={250}
-            height={45}
+            width={200}
+            height={40}
             className="object-contain"
           />
-
-          
 
           <Image
-            src="/partners/dst.png"
+            src="/partners/dst.jpg"
             alt="Department of Science and Technology"
-            width={200}
-            height={45}
+            width={150}
+            height={40}
             className="object-contain"
           />
+
           <Image
             src="/partners/dpit.jpeg"
             alt="Department of Science and Technology"
-            width={200}
-            height={45}
+            width={150}
+            height={40}
             className="object-contain"
           />
         </div>

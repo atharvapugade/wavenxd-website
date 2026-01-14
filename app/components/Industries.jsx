@@ -37,7 +37,7 @@ const industries = [
     title: "Textile & Fabric Treatment",
     desc: "Applying functional coatings to textiles for water repellency, antimicrobial properties, and enhanced durability.",
     icon: <Shirt size={26} />,
-    image: "/industries/textile.jpg",
+    image: "/industries/textiles.jpg",
   },
   {
     title: "Automotive Applications",
@@ -49,12 +49,12 @@ const industries = [
 
 export default function Industries() {
   return (
-    <section className="max-w-7xl mx-auto px-6 mt-24">
-      <h2 className="text-2xl md:text-3xl font-semibold mb-12 text-gray-900">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-24">
+      <h2 className="text-2xl sm:text-3xl font-semibold mb-12 text-gray-900 text-center sm:text-left">
         Industries We Serve & Our Solutions
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {industries.map((item, index) => (
           <div
             key={index}
@@ -70,24 +70,24 @@ export default function Industries() {
             <div className="absolute inset-0 bg-gradient-to-b from-white/65 to-white/85" />
 
             {/* CONTENT */}
-            <div className="relative h-full p-6 flex flex-col justify-between">
+            <div className="relative h-full p-4 sm:p-6 flex flex-col justify-between">
               <div>
-                <div className="mb-3 text-green-600">
+                <div className="mb-2 sm:mb-3 text-green-600">
                   {item.icon}
                 </div>
 
-                <h3 className="text-lg font-semibold mb-2 text-gray-900">
+                <h3 className="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-gray-900">
                   {item.title}
                 </h3>
 
-                <p className="text-sm text-gray-700 leading-relaxed">
+                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
                   {item.desc}
                 </p>
               </div>
 
               <Link
                 href="/industries"
-                className="text-green-600 text-sm font-medium hover:underline w-fit"
+                className="text-green-600 text-xs sm:text-sm font-medium hover:underline w-fit mt-2 sm:mt-0"
               >
                 Learn More →
               </Link>

@@ -1,28 +1,20 @@
-import { connectDB } from "@/app/lib/mongodb";
-import Enquiry from "@/app/models/enquiry";
-import { sendEnquiryMail } from "@/app/lib/mailer";
+import { NextResponse } from "next/server";
+import connectDB from "./../../lib/mongodb";
+import Enquiry from "./../../models/enquiry";
+import { verifyAdminToken } from "./../../middleware/adminAuth";
 
-export async function POST(req) {
-  try {
-    await connectDB();
+export async function GET(req) {
+  const auth = req.headers.get("authorization");
+  const token = auth?.split(" ")[1];
 
-    const data = await req.json();
-
-    // 1️⃣ Save to DB
-    const savedEnquiry = await Enquiry.create(data);
-
-    // 2️⃣ Send Email
-    await sendEnquiryMail(data);
-
-    return Response.json(
-      { success: true, message: "Enquiry submitted successfully" },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error(error);
-    return Response.json(
-      { success: false, error: "Failed to submit enquiry" },
-      { status: 500 }
-    );
+  const admin = verifyAdminToken(token);
+  if (!admin) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  await connectDB();
+
+  const enquiries = await Enquiry.find().sort({ createdAt: -1 });
+
+  return NextResponse.json({ success: true, enquiries });
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Welcome() {
-  const [showMore, setShowMore] = useState(false);
+  const router = useRouter();
 
   return (
     <section className="max-w-6xl mx-auto px-6 mt-16">
@@ -13,7 +13,7 @@ export default function Welcome() {
         Welcome to <span className="text-green-600">WaveNxD</span> Technologies
       </h2>
 
-      {/* FIRST PARAGRAPH */}
+      {/* PARAGRAPH */}
       <p className="text-gray-700 leading-relaxed text-justify max-w-5xl mb-3">
         In February 2022, two dedicated engineering college professors embarked on
         a remarkable journey, giving birth to WaveNxD Technologies Pvt. Ltd. Our
@@ -26,23 +26,12 @@ export default function Welcome() {
         common person.
       </p>
 
-      {/* READ MORE CONTENT */}
-      {showMore && (
-        <p className="text-gray-700 leading-relaxed text-justify max-w-5xl mt-2">
-          At the heart of our endeavor lies a vision that fuels our every action —
-          to build a business of substantial value within a mere five years. We
-          strive to achieve this by developing technological products that not
-          only enhance the quality of human life but also foster mutual benefits
-          and value creation for all stakeholders involved.
-        </p>
-      )}
-
-      {/* READ MORE / LESS */}
+      {/* READ MORE → ABOUT PAGE */}
       <button
-        onClick={() => setShowMore(!showMore)}
+        onClick={() => router.push("/about")}
         className="mt-3 text-green-600 font-medium hover:underline focus:outline-none"
       >
-        {showMore ? "Read less" : "Read more"}
+        Read more
       </button>
 
     </section>

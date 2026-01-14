@@ -1,35 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IndustriesTop from "./IndustriesTop";
 import IndustryContent from "./IndustryContent";
-import { industriesData } from "./industriesData";
 
-export default function IndustriesClient() {
-  // Start with the first industry selected by default to avoid null rendering
-  const firstIndustryKey = Object.keys(industriesData)[0];
-  const firstApplicationKey = Object.keys(
-    industriesData[firstIndustryKey].items
-  )[0];
+export default function IndustriesClient({ industries: initialIndustries = [] }) {
+  const [industries, setIndustries] = useState(initialIndustries);
+  const [selectedContent, setSelectedContent] = useState(null);
 
-  const [selectedContent, setSelectedContent] = useState(
-    industriesData[firstIndustryKey]?.items[firstApplicationKey] || null
-  );
+  useEffect(() => {
+    // default selection
+    if (industries.length && industries[0].applications.length) {
+      setSelectedContent(industries[0].applications[0]);
+    }
+  }, [industries]);
 
-  const handleSelect = (industryKey, applicationKey) => {
-    const content = industriesData[industryKey]?.items[applicationKey];
-    setSelectedContent(content);
+  const handleSelect = (industrySlug, appSlug) => {
+    // Find industry from state
+    const industry = industries.find((ind) => ind.slug === industrySlug);
+    if (!industry) return;
+
+    // Find application
+    const application = industry.applications.find((app) => app.slug === appSlug);
+    if (!application) return;
+
+    setSelectedContent(application);
   };
 
   return (
-    <div className="w-full">
-      {/* Top industry selector */}
-      <IndustriesTop onSelect={handleSelect} />
+    <>
+      <IndustriesTop industries={industries} onSelect={handleSelect} />
 
-      {/* Industry details */}
-      <div className="mt-10">
-        <IndustryContent content={selectedContent} />
-      </div>
-    </div>
+      {selectedContent && (
+        <div className="mt-10">
+          <IndustryContent content={selectedContent} />
+        </div>
+      )}
+    </>
   );
 }

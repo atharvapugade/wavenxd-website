@@ -1,4 +1,3 @@
-// app/models/Accessory.js
 import mongoose from "mongoose";
 
 const accessorySchema = new mongoose.Schema(
@@ -12,6 +11,7 @@ const accessorySchema = new mongoose.Schema(
       {
         label: String,
         value: String,
+        _id: false, // 🔥 IMPORTANT
       },
     ],
 
