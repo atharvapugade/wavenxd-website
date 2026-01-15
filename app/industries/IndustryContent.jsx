@@ -96,26 +96,27 @@ export default function IndustryContent({ content }) {
 
           {/* Technical Papers */}
           {content.technicalPapers?.length > 0 && (
-            <div className="mt-4 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b pb-1">
-                📄 Technical Papers
-              </h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-2">
-                {content.technicalPapers.map((paper, idx) => (
-                  <li key={idx}>
-                    <a
-                      href={paper.fileUrl || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-green-600 hover:underline"
-                    >
-                      {paper.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+  <div className="mt-4 p-5 border border-gray-200 rounded-xl bg-white shadow-sm">
+    <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b pb-1">
+      📄 Technical Papers
+    </h3>
+    <ul className="list-disc list-inside text-gray-700 space-y-2">
+      {content.technicalPapers.map((paper, idx) => (
+        <li key={idx}>
+          <a
+            href={paper.link} // <-- must match admin field
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-600 hover:underline"
+          >
+            {paper.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
         </div>
       </div>
 

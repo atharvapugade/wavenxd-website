@@ -125,10 +125,24 @@ export default function EditAccessoryPage() {
 
         <textarea name="description" value={form.description} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg" />
 
-        {/* Image */}
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
-        {uploading && <p className="text-sm">Uploading...</p>}
-        {form.image && <img src={form.image} className="h-40 object-contain border mt-2" />}
+        <div className="flex flex-col">
+  <label className="text-sm font-medium text-gray-600 mb-1">Accessory Image</label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="w-full px-3 py-2 border rounded-lg text-sm"
+  />
+  {uploading && <span className="text-sm text-gray-500 mt-1">Uploading...</span>}
+  {form.image && (
+    <img
+      src={form.image}
+      alt="Uploaded"
+      className="mt-2 w-full h-40 object-contain rounded-lg border"
+    />
+  )}
+</div>
+
 
         {/* Specs */}
         <div>

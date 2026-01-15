@@ -3,10 +3,16 @@
 import { useEffect, useState } from "react";
 import { Trash2, Edit2, Plus } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // product _id to delete
+
+  const searchParams = useSearchParams();
+  const toastMsg = searchParams.get("toast"); // read toast from query param
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -29,9 +35,15 @@ export default function AdminProducts() {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!confirm("Are you sure you want to delete this product?")) return;
+  // Show toast from query param once
+  useEffect(() => {
+    if (toastMsg) {
+      setToast(toastMsg);
+      setTimeout(() => setToast(""), 1500);
+    }
+  }, [toastMsg]);
 
+  const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("adminToken");
       const res = await fetch(`/api/admin/products/${id}`, {
@@ -41,12 +53,16 @@ export default function AdminProducts() {
       const data = await res.json();
       if (data.success) {
         setProducts(products.filter((p) => p._id !== id));
+        setToast("✅ Product deleted successfully!");
+        setTimeout(() => setToast(""), 1500);
       } else {
-        alert(data.error || "Failed to delete product");
+        setToast("❌ Failed to delete product");
+        setTimeout(() => setToast(""), 1500);
       }
     } catch (err) {
       console.error(err);
-      alert("Error deleting product");
+      setToast("❌ Error deleting product");
+      setTimeout(() => setToast(""), 1500);
     }
   };
 
@@ -69,10 +85,7 @@ export default function AdminProducts() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {products.map((product) => (
-            <div
-              key={product._id}
-              className="bg-white p-4 rounded-xl shadow relative"
-            >
+            <div key={product._id} className="bg-white p-4 rounded-xl shadow relative">
               <img
                 src={product.image}
                 alt={product.title}
@@ -89,7 +102,7 @@ export default function AdminProducts() {
                   <Edit2 size={14} /> Edit
                 </Link>
                 <button
-                  onClick={() => handleDelete(product._id)}
+                  onClick={() => setDeleteConfirm(product._id)}
                   className="flex items-center gap-1 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm"
                 >
                   <Trash2 size={14} /> Delete
@@ -97,6 +110,37 @@ export default function AdminProducts() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg animate-in slide-in-from-top">
+          {toast}
+        </div>
+      )}
+
+      {/* Centered Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+          <div className="bg-white rounded-xl p-6 w-96 shadow-lg space-y-4">
+            <h2 className="text-xl font-bold text-red-600">Confirm Delete</h2>
+            <p>Are you sure you want to delete this product?</p>
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { handleDelete(deleteConfirm); setDeleteConfirm(null); }}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

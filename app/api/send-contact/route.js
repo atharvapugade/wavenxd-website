@@ -1,4 +1,4 @@
-import { connectDB } from "./../../lib/mongodb";
+import  connectDB  from "./../../lib/mongodb";
 import nodemailer from "nodemailer";
 import Contact from "./../../models/Contact";
 

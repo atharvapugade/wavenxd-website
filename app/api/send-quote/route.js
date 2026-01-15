@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { connectDB } from "./../../lib/mongodb";
+import  connectDB  from "./../../lib/mongodb";
 import Quote from "./../../models/Quote";
 
 export async function POST(req) {

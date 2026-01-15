@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import connectDB from "./../../../lib/mongodb";
-import Enquiry from "./../../../models/enquiry";
-import { verifyAdminToken } from "./../../../middleware/adminAuth";
+import connectDB from "./../../../../lib/mongodb";
+import Enquiry from "./../../../../models/enquiry";
+import { verifyAdminToken } from "./../../../../middleware/adminAuth";
 
 
 export async function DELETE(req, context) {

@@ -128,16 +128,23 @@ export default function AddAccessoryPage() {
 
           {/* Image Upload */}
           <div className="flex flex-col">
-            <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full" />
-            {uploading && <span className="text-sm text-gray-500 mt-1">Uploading...</span>}
-            {form.image && (
-              <img
-                src={form.image}
-                alt="Uploaded"
-                className="mt-2 w-full h-40 object-contain rounded border"
-              />
-            )}
-          </div>
+  <label className="text-sm font-medium text-gray-600 mb-1">Product Image</label>
+  <input
+    type="file"
+    accept="image/*"
+    onChange={handleImageUpload}
+    className="w-full px-3 py-2 border rounded-lg text-sm"
+  />
+  {uploading && <span className="text-sm text-gray-500 mt-1">Uploading...</span>}
+  {form.image && (
+    <img
+      src={form.image}
+      alt="Uploaded"
+      className="mt-2 w-full h-40 object-contain rounded-lg border"
+    />
+  )}
+</div>
+
         </div>
 
         <textarea

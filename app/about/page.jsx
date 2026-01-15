@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 
 export default function AboutPage() {
@@ -21,47 +20,57 @@ export default function AboutPage() {
               <span className="text-green-600 font-medium">
                 WaveNxD Technologies Pvt. Ltd.
               </span>{" "}
-              Our core mission revolves around crafting innovative solutions
-              to simplify and elevate the quality of human life through the
-              realms of electronics and computing engineering.
+              Our core mission revolves around crafting innovative solutions to
+              simplify and elevate the quality of human life through the realms
+              of electronics and computing engineering.
             </p>
 
             <p className="text-gray-700 leading-relaxed">
               With relentless dedication and Hercules efforts, we have delved
-              into the intricacies of complex technologies, endeavoring to
-              create pathways that offer high-quality, cost-effective, and
-              homegrown alternatives for industries, research communities,
-              and the common person.
-              
-              At the heart of our endeavor lies a vision that fuels our every action – to build a business of substantial value within a mere five years. We strive to achieve this by developing technological products that not only enhance the quality of human life but also foster mutual benefits and value creation for all stakeholders involved.
+              into the intricacies of complex technologies, endeavoring to create
+              pathways that offer high-quality, cost-effective, and homegrown
+              alternatives for industries, research communities, and the common
+              person. At the heart of our endeavor lies a vision that fuels our
+              every action – to build a business of substantial value within a
+              mere five years.
             </p>
           </div>
 
-         {/* RIGHT IMAGE CLUSTER */}
-<div className="relative w-full h-[480px]">
+          {/* RIGHT SIDE */}
+          <div className="relative w-full">
 
-  {/* TOP RIGHT */}
-  <div className="absolute top-0 right-6 w-48 h-48 rounded-full overflow-hidden shadow-lg animate-float z-20">
-    <Image src="/about/1.jpg" fill className="object-cover" alt="" />
-  </div>
+            {/* ================= MOBILE IMAGE (ONLY ONE) ================= */}
+            <div className="block md:hidden w-full h-64 rounded-xl overflow-hidden shadow-lg">
+              <Image
+                src="/about/2.jpg"
+                fill
+                className="object-cover"
+                alt="About WaveNxD"
+              />
+            </div>
 
-  {/* CENTER LARGE */}
-  <div className="absolute top-24 right-52 w-64 h-64 rounded-full overflow-hidden shadow-lg animate-float-slow z-10">
-    <Image src="/about/2.jpg" fill className="object-cover" alt="" />
-  </div>
+            {/* ================= DESKTOP IMAGE CLUSTER (UNCHANGED) ================= */}
+            <div className="hidden md:block relative w-full h-[480px]">
+              {/* TOP RIGHT */}
+              <div className="absolute top-0 right-6 w-48 h-48 rounded-full overflow-hidden shadow-lg animate-float z-20">
+                <Image src="/about/1.jpg" fill className="object-cover" alt="" />
+              </div>
 
-  {/* BOTTOM RIGHT */}
-  <div className="absolute bottom-0 right-24 w-48 h-48 rounded-full overflow-hidden shadow-lg animate-float-fast z-20">
-    <Image src="/about/3.jpg" fill className="object-cover" alt="" />
-  </div>
+              {/* CENTER LARGE */}
+              <div className="absolute top-24 right-52 w-64 h-64 rounded-full overflow-hidden shadow-lg animate-float-slow z-10">
+                <Image src="/about/2.jpg" fill className="object-cover" alt="" />
+              </div>
 
-  {/* EXTRA SMALL */}
-  <div className="absolute top-44 right-8 w-28 h-28 rounded-full overflow-hidden shadow-lg animate-float-slower z-30">
-    <Image src="/about/4.jpg" fill className="object-cover" alt="" />
-  </div>
+              {/* BOTTOM RIGHT */}
+              <div className="absolute bottom-0 right-24 w-48 h-48 rounded-full overflow-hidden shadow-lg animate-float-fast z-20">
+                <Image src="/about/3.jpg" fill className="object-cover" alt="" />
+              </div>
 
-
-
+              {/* EXTRA SMALL */}
+              <div className="absolute top-44 right-8 w-28 h-28 rounded-full overflow-hidden shadow-lg animate-float-slower z-30">
+                <Image src="/about/4.jpg" fill className="object-cover" alt="" />
+              </div>
+            </div>
 
           </div>
         </div>
@@ -79,7 +88,6 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-white/70" />
 
         <div className="relative max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-
           <div className="bg-green-100/80 p-8 rounded-xl">
             <h3 className="text-lg font-semibold mb-4 text-green-900">
               Our Mission
@@ -87,8 +95,8 @@ export default function AboutPage() {
             <p className="text-sm text-gray-800 leading-relaxed">
               Our mission is to offer innovative, environment-friendly products
               and services which are less costly, effective, high quality,
-              complying standards, minimizing resources consuming in general
-              and less energy consuming in particular.
+              complying standards, minimizing resources consuming in general and
+              less energy consuming in particular.
             </p>
           </div>
 
@@ -137,12 +145,17 @@ export default function AboutPage() {
           <h3 className="text-lg font-semibold text-green-700 mb-4">
             Our Core Values
           </h3>
-
           <p className="text-sm text-gray-700 leading-relaxed space-y-2">
-            We strongly believe in building trust by unwavering ethics. <br />
-            We recognize the importance of mutual respect and nurturing relationships. <br />
-            We worship knowledge and its application to build an ecosystem of inclusion. <br />
-            We deliver innovative, high-quality and reliable solutions that win customer confidence.
+            We strongly believe in building trust by unwavering ethics.
+            <br />
+            We recognize the importance of mutual respect and nurturing
+            relationships.
+            <br />
+            We worship knowledge and its application to build an ecosystem of
+            inclusion.
+            <br />
+            We deliver innovative, high-quality and reliable solutions that win
+            customer confidence.
           </p>
         </div>
       </section>

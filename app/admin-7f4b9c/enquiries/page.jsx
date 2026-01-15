@@ -13,7 +13,7 @@ export default function EnquiriesPage() {
       const token = localStorage.getItem("adminToken");
       if (!token) return;
 
-      const res = await fetch("/api/enquiry", {
+      const res = await fetch("/api/admin/enquiry", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
