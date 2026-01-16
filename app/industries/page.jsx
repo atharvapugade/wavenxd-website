@@ -1,15 +1,21 @@
 import IndustriesClient from "./IndustriesClient";
+import connectDB from "./../lib/mongodb";
+import Industry from "./../models/Industry";
 
 async function getIndustries() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/industries`, {
-    cache: "no-store",
-  });
+  await connectDB();
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch industries");
-  }
+  const industries = await Industry.find({}).lean();
 
-  return res.json();
+  // Convert _id to string for client
+  const cleanIndustries = industries.map((ind) => ({
+    ...ind,
+    _id: ind._id.toString(),
+    updatedAt: ind.updatedAt?.toISOString(), // optional, convert Dates
+    createdAt: ind.createdAt?.toISOString(),
+  }));
+
+  return cleanIndustries;
 }
 
 export default async function IndustriesPage() {
