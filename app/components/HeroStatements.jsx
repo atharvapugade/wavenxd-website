@@ -33,24 +33,24 @@ export default function PartnersAndHero() {
           <Image
             src="/partners/scitech.png"
             alt="Science and Technology Park"
-            width={90}
-            height={30}
+            width={100}
+            height={40}
             className="object-contain"
           />
 
           <Image
             src="/partners/dst.jpg"
             alt="Department of Science and Technology"
-            width={80}
-            height={30}
+            width={100}
+            height={40}
             className="object-contain"
           />
 
           <Image
             src="/partners/dpit.jpeg"
             alt="Department of Science and Technology"
-            width={80}
-            height={30}
+            width={100}
+            height={40}
             className="object-contain"
           />
         </div>
