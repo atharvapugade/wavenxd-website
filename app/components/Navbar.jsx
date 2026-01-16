@@ -85,19 +85,22 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {open && (
-        <div className="md:hidden bg-white border-t px-6 py-6">
-          <nav className="flex flex-col gap-4 text-lg font-medium">
-            <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-            <Link href="/products" onClick={() => setOpen(false)}>Products</Link>
-            <Link href="/accessories" onClick={() => setOpen(false)}>Accessories</Link>
-            <Link href="/services" onClick={() => setOpen(false)}>Services</Link>
-            <Link href="/industries" onClick={() => setOpen(false)}>Industries</Link>
-            <Link href="/about" onClick={() => setOpen(false)}>About Us</Link>
-            <Link href="/contact" onClick={() => setOpen(false)}>Contact Us</Link>
-          </nav>
-        </div>
-      )}
+      {/* Mobile Menu */}
+{open && (
+  <div className="md:hidden bg-white border-t px-4 py-4">
+    <nav className="flex flex-col gap-3 text-base font-medium">
+      <Link href="/" onClick={() => setOpen(false)}>Home</Link>
+      <Link href="/products" onClick={() => setOpen(false)}>Products</Link>
+      <Link href="/accessories" onClick={() => setOpen(false)}>Accessories</Link>
+      <Link href="/services" onClick={() => setOpen(false)}>Services</Link>
+      <Link href="/industries" onClick={() => setOpen(false)}>Industries</Link>
+      <Link href="/about" onClick={() => setOpen(false)}>About Us</Link>
+      <Link href="/contact" onClick={() => setOpen(false)}>Contact Us</Link>
+      <Link href="/careers" onClick={() => setOpen(false)}>Careers</Link>
+    </nav>
+  </div>
+)}
+
     </nav>
   );
 }

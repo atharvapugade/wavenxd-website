@@ -11,10 +11,10 @@ export default function Footer() {
       }}
     >
       {/* MAIN FOOTER */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px- py-8 md:py-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
         
         {/* COMPANY INFO */}
-        <div className="flex flex-col">
+        <div className="hidden sm:block flex flex-col">
           <img
             src="/logo.png"
             alt="WaveNxD"
@@ -22,7 +22,7 @@ export default function Footer() {
             height={50}
             className="mx-auto sm:mx-0"
           />
-          <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-gray-700">
+          <p className="hidden sm:block mt-2 sm:mt-3 text-xs sm:text-sm leading-relaxed text-gray-700">
             WaveNxD Technologies delivers advanced ultrasonic spray solutions
             designed for precision, efficiency, and industrial excellence.
           </p>
@@ -30,7 +30,7 @@ export default function Footer() {
 
         {/* QUICK LINKS */}
         <div>
-          <h4 className="text-gray-900 font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+          <h4 className="hidden sm:block text-gray-900 font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
             Quick Links
           </h4>
           <ul className="flex flex-col gap-2 text-xs sm:text-sm">
