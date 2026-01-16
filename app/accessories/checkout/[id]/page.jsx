@@ -1,6 +1,6 @@
 // app/accessories/checkout/[id]/page.jsx
 import CheckoutForm from "./CheckoutForm";
-import { connectDB } from "../../../lib/mongodb";
+import  connectDB  from "../../../lib/mongodb";
 import Accessory from "../../../models/Acessory";
 
 // 1️⃣ Keep this as a server component (no "use client")

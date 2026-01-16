@@ -1,7 +1,7 @@
 // app/api/accessories/route.js
 import { NextResponse } from "next/server";
 import connectDB from "@/app/lib/mongodb";
-import Accessory from "@/app/models/Accessory";
+import Accessory from "./../../models/Acessory";
 
 export async function GET() {
   await connectDB();
