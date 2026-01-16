@@ -9,8 +9,10 @@ export default function HomePage() {
   return (
     <>
       <HeroSlider />
-      <Welcome />
       <Industries />
+      
+      <Welcome />
+      
       <CTA />
       <MVV />
       <WhatsAppFloat />

@@ -116,38 +116,41 @@ export default function ContactPage() {
         </div>
 
         {/* RIGHT – CLEAN INFO PANEL */}
-        <div className="contact-info">
-          <div className="info-panel">
-            <h3>WaveNxD Technologies</h3>
-            <p className="info-desc">
-              We design and manufacture ultrasonic spray systems for industries
-              where precision, repeatability, and reliability are critical.
-            </p>
+        {/* RIGHT – INFO CARD */}
+<div className="contact-info">
+  <div className="info-card">
+    <h3 className="info-title">WaveNxD Technologies</h3>
 
-            <div className="info-divider" />
+    <p className="info-desc">
+      We design and manufacture ultrasonic spray systems for industries
+      where precision, repeatability, and reliability are critical.
+    </p>
 
-            <div className="info-item">
-              <span>Location</span>
-              <p>Kolhapur, Maharashtra, India</p>
-            </div>
+    <div className="info-divider" />
 
-            <div className="info-item">
-              <span>Phone</span>
-              <p>+91 98220 29999</p>
-            </div>
+    <div className="info-item">
+      <span>📍 Location</span>
+      <p>Kolhapur, Maharashtra, India</p>
+    </div>
 
-            <div className="info-item">
-              <span>Email</span>
-              <p>info@wavenxd.com</p>
-            </div>
+    <div className="info-item">
+      <span>📞 Phone</span>
+      <p>+91 98220 29999</p>
+    </div>
 
-            <div className="info-divider" />
+    <div className="info-item">
+      <span>✉️ Email</span>
+      <p>info@wavenxd.com</p>
+    </div>
 
-            <p className="info-note">
-              Serving Medical, Electronics, Energy, and Automotive industries.
-            </p>
-          </div>
-        </div>
+    <div className="info-divider" />
+
+    <p className="info-note">
+      Serving Medical, Electronics, Energy, and Automotive industries.
+    </p>
+  </div>
+</div>
+
       </section>
     </>
   );

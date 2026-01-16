@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const slides = [
   {
-    src: "/slider/1.jpeg",
+    src: "/slider/1.png",
     title: "Ultrasonic Spray Nozzle – Standard",
     frequency: "60 kHz",
   },
@@ -16,17 +16,17 @@ const slides = [
     frequency: "40 kHz",
   },
   {
-    src: "/slider/3.jpeg",
+    src: "/slider/3.png",
     title: "High Precision Coating Nozzle",
     frequency: "120 kHz",
   },
   {
-    src: "/slider/4.jpeg",
+    src: "/slider/4.jpg",
     title: "Micro Flow Ultrasonic Nozzle",
     frequency: "80 kHz",
   },
   {
-    src: "/slider/5.jpeg",
+    src: "/slider/5.jpg",
     title: "Industrial Spray System",
     frequency: "25 kHz",
   },

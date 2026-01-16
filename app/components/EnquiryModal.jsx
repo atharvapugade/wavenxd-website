@@ -10,9 +10,10 @@ function FieldWithInfo({ info, children }) {
       {children}
 
       {/* Info Icon */}
-      <span className="absolute top-2 right-2 text-gray-400 cursor-pointer text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full border border-gray-300 bg-white group-hover:text-green-600">
-        i
-      </span>
+      <span className="info-icon absolute top-2 right-2 cursor-pointer text-xs font-semibold w-4 h-4 flex items-center justify-center rounded-full">
+  i
+</span>
+
 
       {/* Tooltip */}
       <div className="absolute z-20 top-0 right-6 -translate-y-full mb-2 hidden group-hover:block">
