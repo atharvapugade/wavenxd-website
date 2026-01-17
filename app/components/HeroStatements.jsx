@@ -33,7 +33,7 @@ export default function PartnersAndHero() {
           <Image
             src="/partners/scitech.png"
             alt="Science and Technology Park"
-            width={100}
+            width={115}
             height={40}
             className="object-contain"
           />
@@ -41,7 +41,7 @@ export default function PartnersAndHero() {
           <Image
             src="/partners/dst.jpg"
             alt="Department of Science and Technology"
-            width={100}
+            width={115}
             height={40}
             className="object-contain"
           />
@@ -49,7 +49,7 @@ export default function PartnersAndHero() {
           <Image
             src="/partners/dpit.jpeg"
             alt="Department of Science and Technology"
-            width={100}
+            width={115}
             height={40}
             className="object-contain"
           />
