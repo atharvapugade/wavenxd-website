@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { sendEnquiryMail } from "@/lib/mailer";
+import { sendEnquiryMail } from "./../../../lib/mailer";
 
 export async function POST(req) {
   try {
     const data = await req.json();
-
     await sendEnquiryMail(data);
 
     return NextResponse.json(
@@ -12,7 +11,7 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.error(error);
+    console.error("Enquiry API Error:", error);
     return NextResponse.json(
       { success: false, message: "Failed to send enquiry" },
       { status: 500 }

@@ -57,100 +57,119 @@ export default function ContactPage() {
 
       {/* MAIN */}
       <section className="contact-container">
-        {/* LEFT FORM */}
-        <div className="contact-form">
-          <h2>Send Us a Message</h2>
-          <p className="form-subtext">
-            Fill out the form and our team will get back to you shortly.
-          </p>
+        {/* LEFT – MESSAGE CARD */}
+        <div className="contact-info">
+          <div className="info-card">
+            {/* Card Header */}
+            <h3 className="info-title">Send Us a Message</h3>
+            <p className="info-desc">
+              Fill out the form below and our team will get back to you shortly.
+            </p>
 
-          {success && <p className="success-text">Message sent successfully!</p>}
+            <div className="info-divider" />
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="input-group">
-              <label>Your Name</label>
-              <input
-                type="text"
-                name="name"placeholder="Atharv Apugade"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            {success && (
+              <p className="text-green-600 text-sm mb-4 font-medium">
+                ✅ Message sent successfully!
+              </p>
+            )}
 
-            <div className="input-group">
-              <label>Your Email</label>
-              <input
-                type="email"placeholder="wavenxd@gmail.com"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="input-group">
+                <label>Your Name</label>
+                <input
+                  className="input"
+                  type="text"
+                  name="name"
+                  placeholder="Atharv Apugade"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            <div className="input-group">
-              <label>Company (Optional)</label>
-              <input
-                type="text"
-                name="company"placeholder="WaveNxD"
-                value={formData.company}
-                onChange={handleChange}
-              />
-            </div>
+              <div className="input-group">
+                <label>Your Email</label>
+                <input
+                  className="input"
+                  type="email"
+                  name="email"
+                  placeholder="wavenxd@gmail.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-            <div className="input-group">
-              <label>Your Message</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              />
-            </div>
+              <div className="input-group">
+                <label>Company (Optional)</label>
+                <input
+                  className="input"
+                  type="text"
+                  name="company"
+                  placeholder="WaveNxD"
+                  value={formData.company}
+                  onChange={handleChange}
+                />
+              </div>
 
-            <button type="submit" disabled={loading} className="primary-btn">
-              {loading ? "Sending..." : "Send Message"}
-            </button>
-          </form>
+              <div className="input-group">
+                <label>Your Message</label>
+                <textarea
+                  className="input"
+                  name="message"
+                  placeholder="Tell us about your requirement"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="primary-btn"
+              >
+                {loading ? "Sending..." : "Send Message"}
+              </button>
+            </form>
+          </div>
         </div>
 
-        {/* RIGHT – CLEAN INFO PANEL */}
         {/* RIGHT – INFO CARD */}
-<div className="contact-info">
-  <div className="info-card">
-    <h3 className="info-title">WaveNxD Technologies</h3>
+        <div className="contact-info">
+          <div className="info-card">
+            <h3 className="info-title">WaveNxD Technologies</h3>
 
-    <p className="info-desc">
-      We design and manufacture ultrasonic spray systems for industries
-      where precision, repeatability, and reliability are critical.
-    </p>
+            <p className="info-desc">
+              We design and manufacture ultrasonic spray systems for industries
+              where precision, repeatability, and reliability are critical.
+            </p>
 
-    <div className="info-divider" />
+            <div className="info-divider" />
 
-    <div className="info-item">
-      <span>📍 Location</span>
-      <p>Kolhapur, Maharashtra, India</p>
-    </div>
+            <div className="info-item">
+              <span>📍 Location</span>
+              <p>Kolhapur, Maharashtra, India</p>
+            </div>
 
-    <div className="info-item">
-      <span>📞 Phone</span>
-      <p>+91 98220 29999</p>
-    </div>
+            <div className="info-item">
+              <span>📞 Phone</span>
+              <p>+91 98220 29999</p>
+            </div>
 
-    <div className="info-item">
-      <span>✉️ Email</span>
-      <p>info@wavenxd.com</p>
-    </div>
+            <div className="info-item">
+              <span>✉️ Email</span>
+              <p>info@wavenxd.com</p>
+            </div>
 
-    <div className="info-divider" />
+            <div className="info-divider" />
 
-    <p className="info-note">
-      Serving Medical, Electronics, Energy, and Automotive industries.
-    </p>
-  </div>
-</div>
-
+            <p className="info-note">
+              Serving Medical, Electronics, Energy, and Automotive industries.
+            </p>
+          </div>
+        </div>
       </section>
     </>
   );

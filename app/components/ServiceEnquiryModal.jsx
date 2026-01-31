@@ -26,18 +26,18 @@ export default function ServiceEnquiryModal({ service, onClose }) {
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/30 z-40"
+        className="fixed inset-0 bg-black/40 z-40"
         onClick={onClose}
       />
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <div className="relative bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-gray-200">
-          
+        <div className="relative bg-white w-full max-w-xl rounded-2xl shadow-2xl">
+
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center justify-between px-6 py-4 border-b">
             <h2 className="text-xl font-semibold text-green-700">
-              Service Enquiry – {service}
+              Enquiry – {service}
             </h2>
             <button
               onClick={onClose}
@@ -48,49 +48,81 @@ export default function ServiceEnquiryModal({ service, onClose }) {
           </div>
 
           {/* Body */}
-          <div className="p-6 max-h-[70vh] overflow-y-auto">
+          <div className="p-6">
             {success ? (
-              <div className="text-center py-12">
+              <div className="text-center py-10">
                 <p className="text-green-600 text-lg font-semibold">
-                  ✅ Enquiry submitted successfully
+                  Enquiry submitted successfully
                 </p>
                 <p className="text-gray-600 mt-2">
                   Our team will contact you shortly.
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
-                
-                {/* Organization */}
-                <input name="organizationName" required placeholder="Organization Name" className="input-light" />
-                <input name="organizationWebsite" placeholder="Organization Website" className="input-light" />
-                <input name="gstNumber" placeholder="GST Number" className="input-light" />
-                <input name="organizationType" required placeholder="Organization Type" className="input-light" />
-                <input name="address" required placeholder="Address" className="input-light sm:col-span-2" />
+              <form onSubmit={handleSubmit} className="grid gap-4">
 
-                {/* SPOC */}
-                <input name="spocName" required placeholder="SPoC Name" className="input-light" />
-                <input name="spocEmail" required type="email" placeholder="SPoC Email" className="input-light" />
-                <input name="spocPhone" required placeholder="SPoC Phone" className="input-light" />
-
-                {/* Application */}
-                <textarea
-                  name="purpose"
-                  placeholder="Purpose of Application"
-                  className="input-light sm:col-span-2"
-                  rows={3}
-                />
-
-                {/* Submit */}
-                <div className="sm:col-span-2 flex justify-end mt-6">
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="bg-green-600 hover:bg-green-700 px-8 py-3 rounded-lg text-white font-medium transition"
-                  >
-                    {loading ? "Submitting..." : "Submit Enquiry"}
-                  </button>
+                <div className="input-group">
+                  <input
+                    className="input"
+                    name="organizationName"
+                    required
+                    placeholder="Organization Name *"
+                  />
                 </div>
+
+                <div className="input-group">
+                  <input
+                    className="input"
+                    name="organizationWebsite"
+                    placeholder="Organization Website (optional)"
+                  />
+                </div>
+
+                <div className="input-group">
+                  <input
+                    className="input"
+                    name="contactName"
+                    required
+                    placeholder="Your Name *"
+                  />
+                </div>
+
+                <div className="input-group">
+                  <input
+                    className="input"
+                    type="email"
+                    name="contactEmail"
+                    required
+                    placeholder="Email Address *"
+                  />
+                </div>
+
+                <div className="input-group">
+                  <input
+                    className="input"
+                    name="contactPhone"
+                    required
+                    placeholder="Phone Number *"
+                  />
+                </div>
+
+                <div className="input-group">
+                  <textarea
+                    className="input"
+                    name="message"
+                    rows={4}
+                    required
+                    placeholder="Briefly describe your requirement *"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="mt-2 bg-green-600 hover:bg-green-700 py-3 rounded-lg text-white font-medium transition"
+                >
+                  {loading ? "Sending..." : "Send Enquiry"}
+                </button>
               </form>
             )}
           </div>
