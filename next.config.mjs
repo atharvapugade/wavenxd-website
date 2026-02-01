@@ -4,7 +4,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "th.bing.com",
+        hostname: "th.bing.com", // keep existing
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com", // ✅ add this for Cloudinary
+        port: "", // optional
+        pathname: "/**", // allow all folders
       },
     ],
   },
