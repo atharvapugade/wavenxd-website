@@ -17,12 +17,13 @@ export default function ProductCard({ product, onRequestQuote }) {
       "
     >
       <Image
-        src={product.image}
-        alt={product.title}
-        width={400}
-        height={220}
-        className="w-full h-40 object-cover rounded-lg mb-3"
-      />
+  src={product.image}
+  alt={product.title}
+  width={400}
+  height={300} // optional, for Next.js optimization
+  className="w-full h-60 md:h-60 lg:h-62 object-cover rounded-lg mb-3"
+/>
+
 
       <h3 className="text-lg font-semibold mb-1">
         {product.title}
