@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function AccessoriesList() {
   const [accessories, setAccessories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleteId, setDeleteId] = useState(null); // ID of accessory to delete
+  const [deleteId, setDeleteId] = useState(null);
   const [toast, setToast] = useState("");
 
   // Fetch all accessories
@@ -18,7 +18,7 @@ export default function AccessoriesList() {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        setAccessories(data || []);
+        setAccessories(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Failed to fetch accessories:", err);
       } finally {
@@ -37,8 +37,9 @@ export default function AccessoriesList() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
+
       if (data.success) {
-        setAccessories(accessories.filter((a) => a._id !== id));
+        setAccessories((prev) => prev.filter((a) => a._id !== id));
         setToast("✅ Accessory deleted successfully!");
         setTimeout(() => setToast(""), 1500);
       } else {
@@ -48,11 +49,13 @@ export default function AccessoriesList() {
       console.error(err);
       alert("Something went wrong while deleting.");
     } finally {
-      setDeleteId(null); // Close delete modal
+      setDeleteId(null);
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading accessories...</p>;
+  if (loading) {
+    return <p className="text-center mt-10">Loading accessories...</p>;
+  }
 
   return (
     <div className="p-6 max-w-5xl mx-auto relative">
@@ -69,44 +72,54 @@ export default function AccessoriesList() {
         <p className="text-gray-600 mt-4">No accessories found.</p>
       ) : (
         <div className="grid md:grid-cols-3 gap-4 mt-4">
-          {accessories.map((acc) => (
-            <div key={acc._id} className="border p-4 rounded shadow flex flex-col items-center">
-              {/* Safe Image */}
-              {acc.image ? (
-                <img
-                  src={acc.image}
-                  alt={acc.title}
-                  className="w-full h-32 object-contain mb-2"
-                />
-              ) : (
-                <div className="w-full h-32 bg-gray-100 flex items-center justify-center mb-2 text-gray-400 text-sm">
-                  No Image
+          {accessories.map((acc) => {
+            const hasValidImage =
+              typeof acc.image === "string" && acc.image.trim() !== "";
+
+            return (
+              <div
+                key={acc._id}
+                className="border p-4 rounded shadow flex flex-col items-center"
+              >
+                {/* ✅ SAFE IMAGE RENDERING */}
+                {hasValidImage ? (
+                  <img
+                    src={acc.image}
+                    alt={acc.title}
+                    className="w-full h-32 object-contain mb-2"
+                  />
+                ) : (
+                  <div className="w-full h-32 bg-gray-100 flex items-center justify-center mb-2 text-gray-400 text-sm">
+                    No Image
+                  </div>
+                )}
+
+                <h2 className="font-bold text-center">{acc.title}</h2>
+                <p className="text-green-600 font-semibold">
+                  ₹{acc.price ?? 0}
+                </p>
+
+                <div className="flex gap-4 mt-3">
+                  <Link
+                    href={`/admin-7f4b9c/accessories/edit/${acc._id}`}
+                    className="text-blue-600 font-semibold"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => setDeleteId(acc._id)}
+                    className="text-red-600 font-semibold"
+                  >
+                    Delete
+                  </button>
                 </div>
-              )}
-
-              <h2 className="font-bold text-center">{acc.title}</h2>
-              <p className="text-green-600 font-semibold">${acc.price || 0}</p>
-
-              <div className="flex gap-2 mt-2">
-                <Link
-                  href={`/admin-7f4b9c/accessories/edit/${acc._id}`}
-                  className="text-blue-600 font-semibold"
-                >
-                  Edit
-                </Link>
-                <button
-                  onClick={() => setDeleteId(acc._id)}
-                  className="text-red-600 font-semibold"
-                >
-                  Delete
-                </button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
-      {/* Centered Delete Modal */}
+      {/* Delete Confirmation Modal */}
       {deleteId && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-80 space-y-4">
@@ -132,7 +145,7 @@ export default function AccessoriesList() {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg animate-in slide-in-from-top">
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg">
           {toast}
         </div>
       )}

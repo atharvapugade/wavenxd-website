@@ -46,28 +46,39 @@ export default function AddAccessoryPage() {
 
   // Handle image upload
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setUploading(true);
-    setError("");
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append("image", file);
+  setUploading(true);
+  setError("");
 
-    try {
-      const res = await fetch("/api/admin/accessories/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error || "Upload failed");
-      setForm({ ...form, image: data.path }); // data.path should be string URL
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setUploading(false);
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const res = await fetch("/api/admin/accessories/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Upload failed");
     }
-  };
+
+    // ✅ CORRECT
+    setForm((prev) => ({
+      ...prev,
+      image: data.path,
+    }));
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setUploading(false);
+  }
+};
+
 
   // Handle submit
   const handleSubmit = async (e) => {

@@ -14,21 +14,21 @@ export async function POST(req) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const uploadResult = await new Promise((resolve, reject) => {
+    const result = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
         {
           folder: "accessories",
         },
         (error, result) => {
           if (error) reject(error);
-          else resolve(result);
+          resolve(result);
         }
       ).end(buffer);
     });
 
     return Response.json({
       success: true,
-      url: uploadResult.secure_url, // ✅ Cloudinary URL
+      path: result.secure_url, // ✅ CLOUDINARY URL
     });
   } catch (err) {
     console.error(err);
