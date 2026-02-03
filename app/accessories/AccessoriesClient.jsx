@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { addToCart, getCart } from "../lib/cart";
 import { ShoppingCart } from "lucide-react";
 
-export default function AccessoriesClient({ accessories }) {
+export default function AccessoriesClient({ accessories = [] }) {
   const [cartIds, setCartIds] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [toast, setToast] = useState(null);
@@ -30,7 +30,7 @@ export default function AccessoriesClient({ accessories }) {
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-12 relative">
-      {/* HEADER with VIEW CART BUTTON */}
+      {/* HEADER */}
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl md:text-4xl text-green-600 font-bold">
           Our Accessories
@@ -47,10 +47,10 @@ export default function AccessoriesClient({ accessories }) {
         )}
       </div>
 
-      {/* TOAST MESSAGE */}
+      {/* TOAST */}
       {toast && (
-        <div className="fixed top-20 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg animate-slide-in z-50">
-          {toast}{" "}
+        <div className="fixed top-20 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+          {toast}
           <button
             onClick={() => router.push("/accessories/cart")}
             className="underline ml-2 hover:text-gray-200 font-medium"
@@ -60,58 +60,72 @@ export default function AccessoriesClient({ accessories }) {
         </div>
       )}
 
-      {/* PRODUCT GRID */}
+      {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {accessories.map((product) => (
-          <div
-            key={product._id}
-            className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between hover:shadow-2xl transition-shadow duration-300"
-          >
-            <div>
-              <Image
-                src={product.image}
-                alt={product.title}
-                width={300}
-                height={220}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
+        {accessories.map((product) => {
+          const imageUrl =
+            typeof product.image === "string" && product.image.startsWith("http")
+              ? product.image
+              : "/placeholder.png"; // ✅ fallback
 
-              <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
-              <p className="text-gray-700 text-sm mb-4">{product.description}</p>
+          return (
+            <div
+              key={product._id}
+              className="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between hover:shadow-2xl transition"
+            >
+              <div>
+                {/* ✅ SAFE CLOUDINARY IMAGE */}
+                <div className="relative w-full h-48 mb-4">
+                  <Image
+                    src={imageUrl}
+                    alt={product.title}
+                    fill
+                    className="object-contain rounded-lg"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority={false}
+                  />
+                </div>
 
-              <p className="text-green-600 font-bold text-lg mb-4">
-                ₹{product.price}
-              </p>
-            </div>
+                <h3 className="text-xl font-semibold mb-2">
+                  {product.title}
+                </h3>
 
-            <div className="flex gap-3 mt-auto">
-              {/* BUY NOW – untouched */}
-              <Link
-                href={`/accessories/checkout/${product._id}`}
-                className="flex-1 bg-green-600 text-white py-2 rounded-full text-center hover:bg-green-700 transition font-medium"
-              >
-                Buy Now
-              </Link>
+                <p className="text-gray-700 text-sm mb-4 line-clamp-3">
+                  {product.description}
+                </p>
 
-              {/* ADD TO CART / VIEW CART – modernized */}
-              {cartIds.includes(product._id) ? (
-                <button
-                  onClick={() => router.push("/accessories/cart")}
-                  className="flex-1 bg-gray-400 text-white py-2 rounded-full hover:bg-gray-500 transition font-medium"
+                <p className="text-green-600 font-bold text-lg mb-4">
+                  ₹{product.price}
+                </p>
+              </div>
+
+              <div className="flex gap-3 mt-auto">
+                <Link
+                  href={`/accessories/checkout/${product._id}`}
+                  className="flex-1 bg-green-600 text-white py-2 rounded-full text-center hover:bg-green-700 transition font-medium"
                 >
-                  Added to cart
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="flex-1 bg-green-600 text-white py-2 rounded-full hover:bg-green-700 transition font-medium"
-                >
-                  Add to Cart
-                </button>
-              )}
+                  Buy Now
+                </Link>
+
+                {cartIds.includes(product._id) ? (
+                  <button
+                    onClick={() => router.push("/accessories/cart")}
+                    className="flex-1 bg-gray-400 text-white py-2 rounded-full hover:bg-gray-500 transition font-medium"
+                  >
+                    Added
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="flex-1 bg-green-600 text-white py-2 rounded-full hover:bg-green-700 transition font-medium"
+                  >
+                    Add to Cart
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
