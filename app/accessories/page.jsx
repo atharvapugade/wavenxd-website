@@ -1,11 +1,16 @@
-import  connectDB  from "../lib/mongodb";
+import connectDB from "../lib/mongodb";
 import Accessory from "../models/Acessory";
 import AccessoriesClient from "./AccessoriesClient";
+
+export const dynamic = "force-dynamic"; // 🔥 REQUIRED
+export const revalidate = 0;             // 🔥 DISABLE ISR CACHE
 
 export default async function AccessoriesPage() {
   await connectDB();
 
-  const accessoriesDocs = await Accessory.find({ isActive: true }).lean();
+  const accessoriesDocs = await Accessory.find({ isActive: true })
+    .sort({ createdAt: -1 })
+    .lean();
 
   const accessories = accessoriesDocs.map((doc) => ({
     ...doc,
