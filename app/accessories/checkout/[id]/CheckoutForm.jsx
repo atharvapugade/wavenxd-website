@@ -8,6 +8,7 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
   const router = useRouter();
   const isCartCheckout = cartItems.length > 0;
 
+  /* ---------------- FORM STATE ---------------- */
   const [quantity, setQuantity] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -20,17 +21,20 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
     phone: "",
   });
 
-  const shippingCharge = 100;
+  /* ---------------- PRICING (MATCH CART PAGE) ---------------- */
+  const SHIPPING_CHARGE = 50;
+  const TAX = 480;
+
   const subtotal = isCartCheckout
     ? cartItems.reduce(
-        (sum, item) =>
-          sum + (item.price || 0) * (item.quantity || 1),
+        (sum, item) => sum + item.price * item.quantity,
         0
       )
     : (product?.price || 0) * quantity;
 
-  const total = subtotal + shippingCharge;
+  const total = subtotal + SHIPPING_CHARGE + TAX;
 
+  /* ---------------- HANDLERS ---------------- */
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "pin" && value.length > 6) return;
@@ -44,9 +48,10 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
     formData.address.trim() &&
     formData.city.trim() &&
     formData.state.trim() &&
-    formData.pin.trim().length === 6 &&
-    formData.phone.trim().length === 10;
+    formData.pin.length === 6 &&
+    formData.phone.length === 10;
 
+  /* ---------------- RAZORPAY ---------------- */
   const loadRazorpayScript = () =>
     new Promise((resolve) => {
       if (window.Razorpay) return resolve(true);
@@ -78,9 +83,9 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
       name: "WaveNxD",
       description: isCartCheckout
         ? "Accessories Cart"
-        : product?.title || "Product",
+        : product?.title || "Accessory",
       order_id: order.id,
-      handler: function () {
+      handler: () => {
         alert("Payment Successful!");
         onSuccess?.();
         router.push("/accessories");
@@ -96,56 +101,46 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
     new window.Razorpay(options).open();
   };
 
+  /* ---------------- UI ---------------- */
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4 sm:px-6 overflow-auto">
-      <div className="bg-white w-full max-w-full sm:max-w-4xl rounded-xl shadow-xl p-4 sm:p-8 flex flex-col gap-6">
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4 overflow-auto">
+      <div className="bg-white w-full max-w-4xl rounded-xl shadow-xl p-6 sm:p-8">
 
-       {/* HEADER */}
-<div className="relative flex items-center justify-between mb-4 sm:mb-6 px-2 sm:px-0">
-  {/* Logo - hidden on mobile */}
-  <div className="hidden sm:flex flex-shrink-0">
-    <Image
-      src="/logo.png"
-      alt="WaveNxD"
-      width={140}
-      height={70}
-      className="object-contain"
-    />
-  </div>
+        {/* HEADER */}
+        <div className="relative flex justify-between items-center mb-6">
+          <div className="hidden sm:block">
+            <Image src="/logo.png" alt="WaveNxD" width={140} height={70} />
+          </div>
 
-  {/* Title - absolutely centered */}
-  <h2 className="absolute left-1/2 -translate-x-1/2 text-sm sm:text-xl font-semibold text-green-600 text-center">
-    Secure Checkout
-  </h2>
+          <h2 className="absolute left-1/2 -translate-x-1/2 text-green-600 font-semibold">
+            Secure Checkout
+          </h2>
 
-  {/* Close Button */}
-  <button
-    onClick={() => router.back()}
-    className="text-gray-500 hover:text-gray-800 text-2xl leading-none"
-    aria-label="Close"
-  >
-    &times;
-  </button>
-</div>
+          <button
+            onClick={() => router.back()}
+            className="text-2xl text-gray-500 hover:text-gray-800"
+          >
+            &times;
+          </button>
+        </div>
 
-
-
-
-        {/* PRODUCT SUMMARY */}
+        {/* PRODUCT SUMMARY (SINGLE PRODUCT ONLY) */}
         {!isCartCheckout && product && (
-          <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row gap-4 sm:gap-6 border-b pb-4 sm:pb-6">
-            <div className="w-full sm:w-28 h-28 relative rounded-lg overflow-hidden mx-auto sm:mx-0">
+          <div className="flex gap-6 border-b pb-6 mb-6">
+            <div className="w-28 h-28 relative">
               <Image
-                src={product.image || ""}
-                alt={product.title || ""}
+                src={product.image}
+                alt={product.title}
                 fill
-                className="object-cover"
+                className="object-cover rounded-lg"
               />
             </div>
-            <div className="flex-1 flex flex-col justify-between">
+
+            <div className="flex-1">
               <h3 className="font-medium">{product.title}</h3>
-              <p className="text-sm text-gray-500 mt-1">{product.description}</p>
-              <div className="flex justify-between items-center mt-3">
+              <p className="text-sm text-gray-500">{product.description}</p>
+
+              <div className="flex justify-between mt-4 items-center">
                 <select
                   value={quantity}
                   onChange={(e) => setQuantity(Number(e.target.value))}
@@ -157,14 +152,17 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
                     </option>
                   ))}
                 </select>
-                <span className="text-green-600 font-semibold">₹{subtotal}</span>
+
+                <span className="font-semibold text-green-600">
+                  ₹{subtotal}
+                </span>
               </div>
             </div>
           </div>
         )}
 
         {/* FORM */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {["name", "phone", "email", "city", "state", "pin"].map((field) => (
             <input
               key={field}
@@ -172,7 +170,7 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
               placeholder={field.toUpperCase()}
               value={formData[field]}
               onChange={handleChange}
-              className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
             />
           ))}
 
@@ -181,27 +179,38 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
             placeholder="ADDRESS"
             value={formData.address}
             onChange={handleChange}
-            className="sm:col-span-2 w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="sm:col-span-2 border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
           />
         </div>
 
-        {/* TOTAL */}
-        <div className="flex justify-between text-base sm:text-lg font-semibold mt-4 sm:mt-6">
-          <span>Total</span>
-          <span>₹{total}</span>
-        </div>
+        {/* TOTALS */}
+        <div className="mt-6 space-y-2 text-sm">
+          <div className="flex justify-between">
+            <span>Subtotal</span>
+            <span>₹{subtotal}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Tax</span>
+            <span>₹{TAX}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Shipping</span>
+            <span>₹{SHIPPING_CHARGE}</span>
+          </div>
 
-        {/* TRUST MESSAGE */}
-        <p className="text-xs sm:text-sm text-gray-500 mt-2">
-          🔒 After successful payment, our team will contact you shortly to
-          confirm your order and assist you further.
-        </p>
+          <hr />
+
+          <div className="flex justify-between text-lg font-semibold">
+            <span>Total</span>
+            <span>₹{total}</span>
+          </div>
+        </div>
 
         {/* PAY BUTTON */}
         <button
           onClick={handlePayment}
           disabled={!isFormValid()}
-          className={`w-full mt-4 sm:mt-6 py-3 rounded-lg text-white text-sm sm:text-lg transition ${
+          className={`w-full mt-6 py-3 rounded-lg text-white ${
             isFormValid()
               ? "bg-green-600 hover:bg-green-700"
               : "bg-gray-300 cursor-not-allowed"
@@ -209,6 +218,10 @@ export default function CheckoutForm({ product, cartItems = [], onSuccess }) {
         >
           Proceed To Pay
         </button>
+
+        <p className="text-xs text-gray-500 mt-3 text-center">
+          🔒 After successful payment, our team will contact you shortly.
+        </p>
       </div>
     </div>
   );
