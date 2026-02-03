@@ -8,28 +8,35 @@ const slides = [
   {
     src: "/slider/1.png",
     title: "Ultrasonic Spray Nozzle – Standard",
-    frequency: "60 kHz",
+    frequency: "60/120/160KHz",
+  },
+ 
+  {
+    src: "/slider/3.jpeg",
+    title: "Ultrasonic Spray Pyrolysis",
+    frequency: "60/120/160KHz",
   },
   {
-    src: "/slider/2.jpeg",
-    title: "Ultrasonic Spray Nozzle – Wide Angle",
-    frequency: "40 kHz",
+    src: "/slider/4.jpeg",
+    title: "Fully Automatic Nozzle Drive System",
+    frequency: "60KHz/ 120KHz/ 180KHz (+/ -)10% Tolerence",
   },
   {
-    src: "/slider/3.png",
-    title: "High Precision Coating Nozzle",
-    frequency: "120 kHz",
+    src: "/slider/2.png",
+    title: "Ultrasonic Spray Nozzle",
+    frequency: "60/120/160KHz",
   },
   {
-    src: "/slider/4.jpg",
-    title: "Micro Flow Ultrasonic Nozzle",
-    frequency: "80 kHz",
+    src: "/slider/5.jpeg",
+    title: "Ultrasonic Spray Nozzle With Extended Horn",
+    frequency: "180/120/60 KHz",
   },
   {
-    src: "/slider/5.jpg",
-    title: "Industrial Spray System",
-    frequency: "25 kHz",
+    src: "/slider/6.png",
+    title: "Ultrasonic Nozzle Drive System",
+    frequency: "120 KHz ±10%",
   },
+   
 ];
 
 export default function HeroSlider() {
