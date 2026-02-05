@@ -15,7 +15,7 @@ export default function HomePage() {
       
       <CTA />
       <MVV />
-      <WhatsAppFloat />
+      
       
     </>
   );
