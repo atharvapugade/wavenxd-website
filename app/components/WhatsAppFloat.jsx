@@ -1,34 +1,35 @@
 "use client";
 
-export default function WhatsAppFloat() {
-  const phoneNumber = "9561701860";
+export default function WhatsAppFloat({ small }) {
+  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const message = encodeURIComponent(
     "Hello WaveNxD Team, I would like to know more about your products."
   );
 
   return (
-    <a
-      href={`https://wa.me/91${phoneNumber}?text=${message}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-green-600 text-white rounded-full shadow-xl flex items-center justify-center transition transform hover:scale-110 animate-float-soft group"
-    >
-      {/* Tooltip */}
-      <span className="absolute bottom-16 right-1/2 translate-x-1/2 whitespace-nowrap bg-black text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition pointer-events-none">
-        WhatsApp Now
-      </span>
-
-      {/* WhatsApp SVG */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="26"
-        height="26"
-        viewBox="0 0 24 24"
-        fill="white"
+    <div className="relative group flex items-center">
+      <a
+        href={`https://wa.me/91${phoneNumber}?text=${message}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat on WhatsApp"
+        className={`${
+          small ? "w-12 h-12" : "w-14 h-14"
+        } bg-[#25D366] rounded-full shadow-xl flex items-center justify-center transition-transform duration-200 hover:scale-110`}
       >
-        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.97.52 3.89 1.52 5.6L2 22l4.64-1.6a9.86 9.86 0 0 0 5.4 1.58h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.73 14.27c-.24.67-1.37 1.27-1.93 1.36-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.75-.64-3.08-1.33-5.08-4.43-5.24-4.63-.16-.2-1.25-1.67-1.25-3.19 0-1.52.79-2.27 1.07-2.58.28-.31.62-.39.83-.39.21 0 .41 0 .59.01.19.01.44-.07.69.53.24.59.82 2.03.89 2.18.07.14.12.31.02.51-.1.2-.15.31-.3.48-.15.17-.31.37-.44.49-.15.15-.31.31-.13.61.18.3.8 1.32 1.71 2.14 1.17 1.04 2.16 1.36 2.46 1.52.31.16.49.13.67-.08.18-.21.77-.89.98-1.2.2-.31.41-.25.69-.15.28.1 1.78.84 2.08.99.3.15.5.23.57.36.07.13.07.75-.17 1.42z" />
-      </svg>
-    </a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          className={`${small ? "w-6 h-6" : "w-7 h-7"}`}
+          fill="white"
+        >
+          <path d="M19.11 17.41c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.71-1.34-1.59-1.5-1.86-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.48-.84-2.03-.22-.53-.44-.46-.61-.47h-.52c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27s.97 2.63 1.11 2.81c.14.18 1.91 2.91 4.63 4.08.65.28 1.16.45 1.56.57.66.21 1.27.18 1.74.11.53-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM16.01 3C8.84 3 3 8.84 3 16c0 2.53.74 5 2.14 7.11L3 29l6.06-2.01A12.9 12.9 0 0016.01 29C23.16 29 29 23.16 29 16S23.16 3 16.01 3zm0 23.7c-2.09 0-4.14-.56-5.92-1.63l-.42-.25-3.6 1.2 1.17-3.51-.27-.45A10.69 10.69 0 015.31 16c0-5.9 4.8-10.7 10.7-10.7 5.9 0 10.69 4.8 10.69 10.7 0 5.9-4.79 10.7-10.69 10.7z" />
+        </svg>
+      </a>
+
+      <span className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-md opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 whitespace-nowrap pointer-events-none">
+        Chat on WhatsApp
+      </span>
+    </div>
   );
 }

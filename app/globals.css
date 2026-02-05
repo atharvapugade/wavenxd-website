@@ -261,15 +261,79 @@ textarea.input {
   position: fixed;
   bottom: 24px;
   right: 24px;
+
   width: 56px;
   height: 56px;
+
   background: #25d366;
   border-radius: 50%;
+
   display: flex;
-  justify-content: center;
   align-items: center;
-  box-shadow: 0 12px 30px rgba(37,211,102,0.45);
+  justify-content: center;
+
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.45);
+  cursor: pointer;
+
+  transition: transform 0.2s ease;
 }
+
+/* ensure icon stays centered */
+.whatsapp-float svg,
+.whatsapp-float img {
+  width: 26px;
+  height: 26px;
+}
+
+/* hover scale */
+.whatsapp-float:hover {
+  transform: scale(1.08);
+}
+
+/* tooltip bubble */
+.whatsapp-float::after {
+  content: "Chat on WhatsApp";
+  position: absolute;
+  top: 50%;
+  right: 72px;
+  transform: translateY(-50%) translateX(6px);
+
+  background: #111827;
+  color: #ffffff;
+
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* tooltip arrow */
+.whatsapp-float::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 62px;
+  transform: translateY(-50%);
+
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent #111827;
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* show tooltip on hover */
+.whatsapp-float:hover::after,
+.whatsapp-float:hover::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
 
 /* =====================
    RESPONSIVE
@@ -284,4 +348,382 @@ textarea.input {
 @media (max-width: 640px) {
   h1 { font-size: 28px; }
   h2 { font-size: 22px; }
+}
+
+
+/* ===================== FLOATING WIDGETS ===================== */
+/* ---------- ROOT ---------- */
+.floating-widgets {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+/* ---------- MAIN BUTTON ---------- */
+.main-widget-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease;
+}
+
+.main-widget-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ---------- TOP (VERTICAL) ---------- */
+.widget-top {
+  position: absolute;
+  bottom: 80px;
+  right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
+.widget-top.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ---------- LEFT (HORIZONTAL) ---------- */
+.widget-left {
+  position: absolute;
+  bottom: 4px;
+  right: 80px;
+  display: flex;
+  flex-direction: row; /* IMPORTANT */
+  gap: 14px;
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
+.widget-left.open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* ---------- ALL CIRCULAR WIDGETS ---------- */
+.circle-widget {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.circle-widget:hover {
+  transform: scale(1.1);
+}
+
+
+/* ---------- SMALL ROUND WIDGETS ---------- */
+.small-widget {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.small-widget:hover {
+  transform: scale(1.1);
+}
+
+/* ---------- FULL WIDGETS ---------- */
+.full-widget {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.full-widget:hover {
+  transform: scale(1.05);
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.25s ease-out;
+}
+/* ---------- MAIN BUTTON ---------- */
+.main-widget-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
+  transition: transform 0.25s ease;
+  position: relative;
+}
+
+.main-widget-btn:hover {
+  transform: scale(1.08);
+}
+
+/* ---------- PULSE ---------- */
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.35);
+  animation: pulse-ring 3s infinite;
+  z-index: -1;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------- HINT BUBBLE ---------- */
+
+
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/* ---------- VOICE AI WRAPPER ---------- */
+/* ---------- VOICE AI WRAPPER ---------- */
+/* ================== COMMON WRAPPER ================== */
+.voice-ai-wrapper,
+.chat-ai-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================== VOICE AI BUTTON ================== */
+.voice-ai-btn {
+  width: 56px;
+  height: 56px;
+  background: #7c3aed; /* purple */
+  color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 12px 28px rgba(124, 58, 237, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.voice-ai-btn.small {
+  width: 48px;
+  height: 48px;
+}
+
+.voice-ai-btn:hover {
+  transform: scale(1.08);
+}
+
+/* Mic Icon */
+.voice-ai-icon {
+  width: 22px;
+  height: 22px;
+  z-index: 2;
+}
+
+/* Sound Waves */
+.voice-ai-btn .wave {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.voice-ai-btn:hover .wave-1 {
+  animation: voice-wave 1.2s ease-out infinite;
+}
+
+.voice-ai-btn:hover .wave-2 {
+  animation: voice-wave 1.2s ease-out infinite 0.45s;
+}
+
+@keyframes voice-wave {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* ================== CHAT AI BUTTON ================== */
+.chat-ai-btn {
+  width: 56px;
+  height: 56px;
+  background: #2563eb; /* professional blue */
+  color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-ai-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ================== UNIFIED TOOLTIP ================== */
+.voice-ai-tooltip,
+.chat-ai-tooltip {
+  position: absolute;
+  right: 110%; /* left side, horizontal */
+  background: #111827;
+  color: #ffffff;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Tooltip Arrow */
+.voice-ai-tooltip::after,
+.chat-ai-tooltip::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent #111827;
+}
+
+/* Show tooltip ONLY on hover */
+.voice-ai-wrapper:hover .voice-ai-tooltip,
+.chat-ai-wrapper:hover .chat-ai-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Wrapper */
+.chat-ai-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button */
+.chat-ai-btn {
+  background: #2563eb; /* professional blue */
+  color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-ai-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Tooltip (hidden by default) */
+.chat-ai-tooltip {
+  position: absolute;
+  right: 110%;
+  background: #111827;
+  color: #ffffff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Show tooltip on hover */
+.chat-ai-wrapper:hover .chat-ai-tooltip {
+  opacity: 1;
+  transform: translateX(0);
 }
